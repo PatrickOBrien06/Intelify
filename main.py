@@ -4,6 +4,7 @@ from config import API_KEY
 from docx import Document
 from docx.shared import Inches, Pt
 from docx2pdf import convert
+import json
 
 
 app = Flask(__name__)
@@ -11,53 +12,63 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def home():
   if request.method == "POST":
-    text = request.form.get("text")
-    print(text)
+
+    # Retreive prompt data for book
+    topic = request.form.get("topic")
+    chapters = request.form.get("chapters")
+    subchapters = request.form.get("subchapters")
+    pages = request.form.get("pages")
+    role = "user"
     
-  # client = OpenAI(api_key=API_KEY)
+    client = OpenAI(api_key=API_KEY)
 
-  # context = [{"role": "user", "content": f"""We are making a book about Calculus. Create an outline for our book, which will have 5 chapters, and each chapter will have 3 subchapters
+    # Given the GPT API instructions on how to make the outline
+    content_outline = [{"role": role, "content": f"""We are making a {pages} page book about {topic}. Create an outline for our book, which will have {chapters} chapters, and each chapter will have {subchapters} subchapters
 
-  # Outline For Output prompt:
+    Outline For Output prompt:
 
-  # 'python dict with a key: chapter title, value: a single list containing each subchapter title'"""}]
+    'python dict with a key: chapter title, value: a single list containing each subchapter title'
+    
+    For example, Chapter 1 [Enter Chapter Title]: 1.1 [Enter Subchapter Title] """}]
 
-  # stream = client.chat.completions.create(
-  #   model="gpt-3.5-turbo",
-  #   messages=context
-  # )
+    stream = client.chat.completions.create(
+      model="gpt-3.5-turbo",
+      messages=content_outline
+    )
   
-  outline = {
-  "Chapter 1: Introduction to Calculus": ["1.1 What is Calculus?", "1.2 History of Calculus", "1.3 Importance of Calculus"],
-  "Chapter 2: Differentiation": ["2.1 Understanding Derivatives", "2.2 Rules of Differentiation", "2.3 Applications of Differentiation"],
-  "Chapter 3: Integration": ["3.1 Understanding Integrals", "3.2 Techniques of Integration", "3.3 Applications of Integration"],
-  "Chapter 4: Limits and Continuity": ["4.1 Limit Definition", "4.2 Properties of Limits", "4.3 Continuity of Functions"],
-  "Chapter 5: Advanced Topics in Calculus": ["5.1 Sequences and Series", "5.2 Multivariable Calculus", "5.3 Differential Equations"]
-} # stream.choices[0].message.content
-  
-  chapters = outline.keys()
-  
-  document = Document()
+    # Grap outline of the book and make a list of each chapter
+    outline = stream.choices[0].message.content
+    outline = json.loads(outline)
+    chapters = outline.keys()
+    print(outline)
+    
+    # Open a word document to add content from the AI response
+    document = Document()
+    
+    for chapter in chapters:
+      print(chapter)
+      subchapters = outline[chapter]
+      document.add_heading(chapter, 1)
+      for subchapter in subchapters:
 
-  document.add_picture('image-filename.png')
-  
-  for chapter in chapters:
-    print(chapter)
-    subchapters = outline[chapter]
-    document.add_heading(chapter, 1)
-    for subchapter in subchapters:
-      print(subchapter)
-      
-      document.add_heading(subchapter, 2)
+        # Given the outline generate each subchapter
+        subchapter_content = [{"role": role, "content": f"""We are making a a subchapter for a book this subchapter is about {subchapter}."""}]
 
-      p4 = document.add_paragraph('This is a paragraph with exactly 20 pt line spacing.')
+        stream = client.chat.completions.create(
+          model="gpt-3.5-turbo",
+          messages=subchapter_content
+        )
+        
+        document.add_heading(subchapter, 2)
+        document.add_paragraph(stream.choices[0].message.content)
 
-  document.save("test.docx")
-
-  convert("test.docx", "book.pdf")
+    # Save document and convert into a PDF file for easy access
+    document.save("test.docx")
+    convert("test.docx", "book.pdf")
     
 
   return render_template("index.html")
+
 
 if __name__ == "__main__":
   app.run(debug=True)
