@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% block title %} Prompt-To-Page {% endblock %}
 {% block content %}
+<div class="container">
 <form method="post">
-  <input type="text" name="topic">
-  <input type="text" name="chapters">
-  <input type="text" name="subchapters">
-  <input type="text" name="pages">
-  <input type="submit" value="submit">
+  <p>We are making a book about <input type="text" class="rounded" name="topic" placeholder="Enter Topic" pattern="[A-Za-z]+" required>.
+  This book will have <input type="text" class="rounded" name="chapters" placeholder="Enter Number of Chapters" pattern="[0-9]+" required> Chapters
+  <input type="text" class="rounded" name="subchapters" placeholder="Enter Number of Subchapters" pattern="[0-9]+" required>
+  <input type="text" class="rounded" name="pages" placeholder="Enter Number of Pages" pattern="[0-9]+" required>
+  </p>
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-
+</div>
 {% endblock %}
