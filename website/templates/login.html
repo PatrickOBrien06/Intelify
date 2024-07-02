@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Prompt-To-Page | Login{% endblock %}
+{% block content %}
+
+<div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded mt-5 w-50" style="min-width: 370px;">
+  <h3 class="text-center mb-4">Login</h3>
+  <form method="post">
+    <label id="enter-email">Email</label>
+    <input type="email" name="email" class="form-control mb-3" id="enter-email" placeholder="Enter Email">
+    <label id="enter-password">Password</label>
+    <input type="password" name="password" class="form-control mb-3" id="enter-password" placeholder="Enter Password">
+    <a href="/signup"><p>Don't have an account?</p></a>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Prompt-to-Page | Signup{% endblock %}
+{% block content %}
+
+<div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded mt-5 w-50" style="min-width: 370px;">
+  <h3 class="text-center mb-4">Create Account</h3>
+  <form method="post">
+    <label id="enter-username">Username</label>
+    <input type="text" name="username" class="form-control mb-3" id="enter-username" placeholder="Enter Username">
+    <label id="enter-email">Email</label>
+    <input type="email" name="email" class="form-control mb-3" id="enter-email" placeholder="Enter Email">
+    <label id="enter-password1">Password</label>
+    <input type="password" name="password1" class="form-control mb-3" id="enter-password1" placeholder="Enter Password">
+    <label id="enter-password2">Confirm Password</label>
+    <input type="password" name="password2" class="form-control mb-3" id="enter-passord2" placeholder="Re-enter Password">
+    <a href="/login"><p>Already have an account?</p></a>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary w-100">Signup</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
