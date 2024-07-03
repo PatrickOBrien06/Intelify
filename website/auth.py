@@ -31,7 +31,7 @@ def signup():
       db.session.commit()
       login_user(user, remember=True)
       flash("Account created!", "success")
-      return redirect(url_for("ai.home"))
+      return redirect(url_for("ai.AI"))
    
 
   return render_template("signup.html")
@@ -49,7 +49,7 @@ def login():
       if check_password_hash(user.password, password):
         login_user(user, remember=True)
         flash("Logged In!", "success")
-        return redirect(url_for("ai.home"))
+        return redirect(url_for("ai.AI"))
       else:
         flash("Invalid Email or Password", "danger")
     else:

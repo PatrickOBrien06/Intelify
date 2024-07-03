@@ -6,14 +6,18 @@ from docx import Document
 from docx.shared import Inches, Pt
 from docx2pdf import convert
 import json
+import os
 
 ai = Blueprint('ai', __name__, template_folder="templates")
-book_index = 0
 
-@ai.route("/", methods=["GET", "POST"])
-@ai.route("/home", methods=["GET", "POST"])
-@login_required
+@ai.route("/")
+@ai.route("/home")
 def home():
+  return render_template("home.html")
+
+@ai.route("/ai", methods=["GET", "POST"])
+@login_required
+def AI():
   global book_index
   if request.method == "POST":
 
@@ -81,15 +85,19 @@ def home():
 
         # Save document and convert into a PDF file for easy access
         try:
-          document.save(f"static/test{book_index}.docx")
-          convert(f"static/test{book_index}.docx", f"static/book{book_index}.pdf")
-        
-        except:
-          print("ComTry Refreshing.")
-          flash("Try Refreshing the page!", "danger")
+          docx_path = "website/static/test.docx"
+          pdf_path = "website/static/book.pdf"
+          input_dir = os.path.dirname(docx_path)
+          output_dir = os.path.dirname(pdf_path)
+          os.makedirs(input_dir, exist_ok=True)
+          os.makedirs(output_dir, exist_ok=True)
 
-        print(book_index)
-        book_index += 1
+          document.save(docx_path)
+          convert(docx_path, pdf_path)
+        
+        except Exception as e:
+          print(f"{str(e)} Refreshing.")
+          flash("Try Refreshing the page!", "danger")
 
         
       else:
