@@ -7,6 +7,7 @@ from docx.shared import Inches, Pt
 from docx2pdf import convert
 import json
 import os
+import pythoncom
 
 ai = Blueprint('ai', __name__, template_folder="templates")
 
@@ -71,7 +72,7 @@ def AI():
           for subchapter in subchapters:
 
             # Given the outline generate each subchapter
-            subchapter_content = [{"role": role, "content": f"""We are making a subchapter for a book this subchapter is about {subchapter}."""}]
+            subchapter_content = [{"role": role, "content": f"""We are making a subchapter for a book about {topic} this subchapter is about {subchapter}."""}]
 
             stream = client.chat.completions.create(
               model="gpt-3.5-turbo",
@@ -83,7 +84,10 @@ def AI():
             document.add_heading(subchapter, 2)
             document.add_paragraph(stream.choices[0].message.content)
 
-        # Save document and convert into a PDF file for easy access
+        # Save document and convert into a PDF file for easy access 
+        # CoInit to avoid problems with coroutines
+        pythoncom.CoInitialize()
+
         try:
           docx_path = "website/static/test.docx"
           pdf_path = "website/static/book.pdf"
@@ -98,6 +102,9 @@ def AI():
         except Exception as e:
           print(f"{str(e)} Refreshing.")
           flash("Try Refreshing the page!", "danger")
+
+        # End all coroutines
+        pythoncom.CoUninitialize()
 
         
       else:
