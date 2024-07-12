@@ -103,7 +103,7 @@ def AI():
           print(f"{str(e)} Refreshing.")
           flash("Try Refreshing the page!", "danger")
 
-        # End all coroutines
+        # End all coroutinesu
         pythoncom.CoUninitialize()
 
         

@@ -1,12 +1,32 @@
 {% extends "base.html" %}
-{% block title %}{% endblock %}
+{% block title %}Intelify | Intro{% endblock %}
 {% block content %}
-<div class="container shadow-lg p-3 mt-5 bg-body-tertiary rounded">
-  <h1 class="text-center">Prompt-To-Page</h1>
-  <p class="text-center m-4 mt-5">Create tailored books to expand your knowledge effortlessly at your finger tips!</p>
+
+<div class="container shadow-lg p-3 mt-5 rounded" style="background-color: #ffffff;">
+  <h1 class="text-center" style="color: #004aad; font-weight: 400;">Intelify</h1>
+  <p class="text-center m-4 mt-4">Create tailored books to expand your knowledge effortlessly at your finger tips!</p>
   <div class="d-flex justify-content-center">
-    <a class="w-25" href="/ai"><button class="btn btn-primary mt-4 w-100">Try it!</button></a>
+    <a class="w-25" href="/ai"><button class="btn btn-success mt-3 w-100">Try Intelify!</button></a>
   </div>
+</div>
+<div class="container shadow-lg p-3 mt-5 rounded" style="background-color: #ffffff;">
+  <h1 class="text-center mt-3" style="color: #004aad; font-weight: 400;">Pricing</h1>
+  <div class="container w-100 mt-4">
+  <div class="row align-items-start d-flex justify-content-around" style="height: 20h;">
+    <div class="col border border-primary-subtle border-3 rounded mt-3 m-1 h-100 p-4">
+      <h5>Basic Tier</h5>
+      <p>(No subscription)</p>
+      <p>- Access to generated books up to 50 pages</p>
+      <p>- Pay $1 per book</p>
+    </div>
+    <div class="col border border-primary-subtle border-3 rounded mt-3 m-1 h-100 p-4">
+      <h5>Premium Tier</h5>
+      <p>$11.99/month</p>
+      <p>- Unlimited access to books of any size</p>
+      <p>- Extra control with additional customization options and features</p>
+    
+  </div>
+</div>
 </div>
 
 {% endblock %}
